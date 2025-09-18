@@ -1,20 +1,44 @@
 from langgraph.graph import StateGraph
 from models.state import LeadState
 from config import MIN_BUDGET, MESSAGES, ERROR_MESSAGES
+from services.llm_classifier import classify_event_with_llm, is_llm_available
 from utils.validators import (
     collect_string, 
     collect_float, 
     collect_choice,
-    is_corporate_event,
+    collect_yes_no_describe,
     validate_email,
     validate_phone
 )
 
 
 def collect_event_type(state: LeadState) -> LeadState:
-    print(MESSAGES["welcome"]) 
-    event_type = collect_string("Respuesta")
-    state["is_corporate"] = is_corporate_event(event_type)
+    choice, description = collect_yes_no_describe()
+    
+    if choice == "yes":
+        state["is_corporate"] = True
+    elif choice == "no":
+        state["is_corporate"] = False
+    elif choice == "describe":
+        if is_llm_available():
+            print("Analizando tu descripción...")
+            is_corporate = classify_event_with_llm(description)
+            state["is_corporate"] = is_corporate
+            
+            if is_corporate:
+                print("Basado en tu descripción, tu evento es corporativo.")
+            else:
+                print("Basado en tu descripción, tu evento no es corporativo.")
+        else:
+            print("Servicio de IA no disponible. Usando clasificación manual.")
+            print("Por favor, responde si tu evento es corporativo:")
+            manual_choice = collect_choice(
+                "¿Es corporativo? (sí/no)",
+                choices=["sí", "si", "yes", "no", "n"],
+                case_sensitive=False
+            )
+            state["is_corporate"] = manual_choice.lower() in ["sí", "si", "yes"]
+    
     return state
 
 

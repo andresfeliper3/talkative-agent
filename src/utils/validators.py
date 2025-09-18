@@ -43,6 +43,37 @@ def collect_float(prompt: str, min_value: float = 0.0) -> float:
             print(ERROR_MESSAGES["invalid_number"])
 
 
+def collect_yes_no_describe() -> tuple[str, str]:
+    """
+    Collect user choice for corporate event classification.
+    
+    Returns:
+        Tuple of (choice, description) where:
+        - choice: "yes", "no", or "describe"
+        - description: empty string for yes/no, user description for describe
+    """
+    print("¿Tu evento es corporativo?")
+    print("1. Sí - Es un evento corporativo")
+    print("2. No - No es un evento corporativo") 
+    print("3. Describe tu evento para que podamos clasificarlo")
+    
+    while True:
+        choice = input("Selecciona una opción (1/2/3 o sí/no/describir): ").strip().lower()
+        
+        if choice in ["1", "sí", "si", "yes", "y"]:
+            return "yes", ""
+        elif choice in ["2", "no", "n"]:
+            return "no", ""
+        elif choice in ["3", "describir", "describe", "d"]:
+            description = input("Describe tu evento: ").strip()
+            if description:
+                return "describe", description
+            else:
+                print("Por favor, proporciona una descripción del evento.")
+        else:
+            print("Por favor, selecciona una opción válida (1/2/3 o sí/no/describir).")
+
+
 def collect_choice(prompt: str, choices: list[str], case_sensitive: bool = False) -> str:
     """
     Collect a choice from a list of valid options.
@@ -64,20 +95,6 @@ def collect_choice(prompt: str, choices: list[str], case_sensitive: bool = False
         if value in choices:
             return value
         print(ERROR_MESSAGES["invalid_choice"].format(choices=', '.join(choices)))
-
-
-def is_corporate_event(event_type: str) -> bool:
-    """
-    Determine if an event type is corporate.
-    
-    Args:
-        event_type: The event type string
-        
-    Returns:
-        True if the event is corporate, False otherwise
-    """
-    from config import CORPORATE_KEYWORDS
-    return event_type.lower().strip() in CORPORATE_KEYWORDS
 
 
 def validate_email(email: str) -> bool:
