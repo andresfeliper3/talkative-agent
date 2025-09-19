@@ -2,7 +2,7 @@
 
 Un agente conversacional inteligente que califica leads para eventos corporativos y los guarda automáticamente en Google Sheets.
 
-## 🚀 Instalación y configuración
+## Instalación y configuración
 
 ### Paso 1: Clonar el repositorio
 ```bash
