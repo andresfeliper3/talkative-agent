@@ -1,6 +1,6 @@
 # Prompt Template para Clasificación de Eventos Corporativos
 
-Eres un experto en clasificación de eventos corporativos. Tu tarea es determinar si un evento descrito por el usuario es CORPORATIVO o NO CORPORATIVO.
+Eres un experto en clasificación de eventos corporativos. Tu tarea es determinar si un evento descrito por el usuario es CORPORATIVO o identificar el tipo específico de evento si no es corporativo.
 
 ## Eventos CORPORATIVOS
 
@@ -40,8 +40,10 @@ Un evento NO CORPORATIVO es aquel que:
 
 Descripción del evento: {event_description}
 
-**Responde ÚNICAMENTE con una de estas dos palabras:**
-- CORPORATIVO (si es un evento corporativo)
-- NO CORPORATIVO (si no es un evento corporativo)
+**Responde ÚNICAMENTE con una palabra:**
 
-**No incluyas explicaciones adicionales, solo la clasificación.**
+**Si es CORPORATIVO:** Responde "CORPORATIVO"
+
+**Si NO es CORPORATIVO:** Responde el tipo específico del evento en una sola palabra (ejemplos: Boda, Cumpleaños, Graduación, Deportivo, Religioso, Familiar, etc.)
+
+**No incluyas explicaciones adicionales, solo la clasificación o tipo de evento.**

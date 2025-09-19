@@ -9,6 +9,7 @@ def run_cli():
     
     initial_state: LeadState = {
         "is_corporate": None,
+        "event_type": None,
         "budget": None,
         "name": None,
         "contact": None,
@@ -18,7 +19,7 @@ def run_cli():
     
     final_state = graph.invoke(initial_state)
     print(MESSAGES["conversation_end"])
-    print(f"Estado final: {final_state}")
+    print(MESSAGES["final_state"].format(final_state=final_state))
 
 
 if __name__ == "__main__":

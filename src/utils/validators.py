@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 import re
 
-from config import MIN_EMAIL_LENGTH, MIN_PHONE_DIGITS, ERROR_MESSAGES
+from config import MIN_EMAIL_LENGTH, MIN_PHONE_DIGITS, ERROR_MESSAGES, MESSAGES
 
 
 def collect_string(prompt: str, validator: Optional[Callable[[str], bool]] = None) -> str:
@@ -52,26 +52,25 @@ def collect_yes_no_describe() -> tuple[str, str]:
         - choice: "yes", "no", or "describe"
         - description: empty string for yes/no, user description for describe
     """
-    print("¿Tu evento es corporativo?")
-    print("1. Sí - Es un evento corporativo")
-    print("2. No - No es un evento corporativo") 
-    print("3. Describe tu evento para que podamos clasificarlo")
+    print(MESSAGES["event_type_question"])
+    for option in MESSAGES["event_type_options"]:
+        print(option)
     
     while True:
-        choice = input("Selecciona una opción (1/2/3 o sí/no/describir): ").strip().lower()
+        choice = input(MESSAGES["event_selection_prompt"]).strip().lower()
         
         if choice in ["1", "sí", "si", "yes", "y"]:
             return "yes", ""
         elif choice in ["2", "no", "n"]:
             return "no", ""
         elif choice in ["3", "describir", "describe", "d"]:
-            description = input("Describe tu evento: ").strip()
+            description = input(MESSAGES["event_description_prompt"]).strip()
             if description:
                 return "describe", description
             else:
-                print("Por favor, proporciona una descripción del evento.")
+                print(ERROR_MESSAGES["provide_description"])
         else:
-            print("Por favor, selecciona una opción válida (1/2/3 o sí/no/describir).")
+            print(ERROR_MESSAGES["invalid_event_option"])
 
 
 def collect_choice(prompt: str, choices: list[str], case_sensitive: bool = False) -> str:
@@ -214,12 +213,12 @@ def collect_contact_with_detection() -> tuple[str, str]:
         - contact_type: "email" or "phone"
     """
     while True:
-        contact_input = input("Email o teléfono de contacto: ").strip()
+        contact_input = input(MESSAGES["contact_input_prompt"]).strip()
         
         contact_type, normalized_contact = detect_contact_type(contact_input)
         
         if contact_type == "invalid":
-            print("Por favor, ingresa un email válido (ej: usuario@ejemplo.com) o un teléfono válido (ej: +1234567890).")
+            print(ERROR_MESSAGES["invalid_contact"])
             continue
         
         return normalized_contact, contact_type

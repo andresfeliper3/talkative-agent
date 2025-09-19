@@ -11,14 +11,29 @@ MIN_EMAIL_LENGTH = 5
 MIN_PHONE_DIGITS = 7
 
 MESSAGES = {
-    "welcome": "Hola, gracias por escribirnos. ¿Qué tipo de evento quieres organizar?",
+    "welcome": "¡Hola! 👋\n\nBienvenido a nuestro sistema de calificación de eventos corporativos. Estamos aquí para ayudarte a organizar el evento perfecto para tu empresa.\n\n¿Qué tipo de evento corporativo te gustaría organizar?",
     "budget_question": "¿Cuál es tu presupuesto estimado en USD?",
     "contact_question": "Perfecto. ¿Me compartes tu nombre y un email o teléfono de contacto?",
     "evaluation_header": "\n--- Evaluando tu solicitud ---",
-    "qualified_success": "¡Perfecto!",
-    "qualified_summary": "Resumen de tu solicitud:",
-    "contact_followup": "\nPronto te contactará nuestro equipo comercial.",
-    "conversation_end": "\n--- Conversación terminada ---"
+    "qualified_success": "¡Perfecto!\n\nResumen de tu solicitud:\n   • Tipo de clsrcial.",
+    "conversation_end": "\n--- Conversación terminada ---",
+    "event_type_question": "¿Tu evento es corporativo?",
+    "event_type_options": [
+        "1. Sí - Es un evento corporativo",
+        "2. No - No es un evento corporativo", 
+        "3. Describe tu evento para que podamos clasificarlo"
+    ],
+    "analyzing_description": "Analizando tu descripción...",
+    "description_corporate": "Basado en tu descripción, tu evento es corporativo.",
+    "description_not_corporate": "Basado en tu descripción, tu evento no es corporativo.",
+    "llm_unavailable": "Servicio de IA no disponible. Usando clasificación manual.",
+    "manual_classification_prompt": "Por favor, responde si tu evento es corporativo: ",
+    "event_type_input": "¿Qué tipo de evento quieres organizar? ",
+    "corporate_event_type_input": "¿Qué tipo de evento corporativo quieres organizar? ",
+    "event_selection_prompt": "Selecciona una opción (1/2/3 o sí/no/describir): ",
+    "event_description_prompt": "Describe tu evento: ",
+    "contact_input_prompt": "Email o teléfono de contacto: ",
+    "final_state": "Estado final: {final_state}"
 }
 
 ERROR_MESSAGES = {
@@ -29,5 +44,9 @@ ERROR_MESSAGES = {
     "invalid_input": "Por favor, ingresa un valor válido.",
     "invalid_number": "Por favor, ingresa un número válido.",
     "invalid_choice": "Por favor, elige una de estas opciones: {choices}",
-    "min_value": "Por favor, ingresa un valor mayor o igual a {min_value}."
+    "min_value": "Por favor, ingresa un valor mayor o igual a {min_value}.",
+    "provide_description": "Por favor, proporciona una descripción del evento.",
+    "invalid_event_option": "Por favor, selecciona una opción válida (1/2/3 o sí/no/describir).",
+    "invalid_contact": "Por favor, ingresa un email válido (ej: usuario@ejemplo.com) o un teléfono válido (ej: +1234567890).",
+    "llm_classification_error": "Error en clasificación LLM: {error}"
 }

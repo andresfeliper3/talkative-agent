@@ -12,31 +12,43 @@ from utils.validators import (
 
 
 def collect_event_type(state: LeadState) -> LeadState:
+    print(MESSAGES["welcome"])
     choice, description = collect_yes_no_describe()
     
     if choice == "yes":
         state["is_corporate"] = True
+        # Ask user for specific corporate event type
+        state["event_type"] = input(MESSAGES["corporate_event_type_input"]).strip()
     elif choice == "no":
         state["is_corporate"] = False
+        # Ask user for specific event type
+        state["event_type"] = input(MESSAGES["event_type_input"]).strip()
     elif choice == "describe":
         if is_llm_available():
-            print("Analizando tu descripción...")
-            is_corporate = classify_event_with_llm(description)
+            print(MESSAGES["analyzing_description"])
+            is_corporate, event_type = classify_event_with_llm(description)
             state["is_corporate"] = is_corporate
+            state["event_type"] = event_type or "No especificado"
             
             if is_corporate:
-                print("Basado en tu descripción, tu evento es corporativo.")
+                print(MESSAGES["description_corporate"])
             else:
-                print("Basado en tu descripción, tu evento no es corporativo.")
+                print(MESSAGES["description_not_corporate"])
         else:
-            print("Servicio de IA no disponible. Usando clasificación manual.")
-            print("Por favor, responde si tu evento es corporativo:")
+            print(MESSAGES["llm_unavailable"])
+            print(MESSAGES["manual_classification_prompt"])
             manual_choice = collect_choice(
                 "¿Es corporativo? (sí/no)",
                 choices=["sí", "si", "yes", "no", "n"],
                 case_sensitive=False
             )
-            state["is_corporate"] = manual_choice.lower() in ["sí", "si", "yes"]
+            is_corporate = manual_choice.lower() in ["sí", "si", "yes"]
+            state["is_corporate"] = is_corporate
+            
+            if is_corporate:
+                state["event_type"] = input(MESSAGES["corporate_event_type_input"]).strip()
+            else:
+                state["event_type"] = input(MESSAGES["event_type_input"]).strip()
     
     return state
 
@@ -62,6 +74,7 @@ def evaluate_qualification(state: LeadState) -> LeadState:
     print(MESSAGES["evaluation_header"])
     
     is_corporate = state["is_corporate"]
+    event_type = state["event_type"]
     budget = state["budget"]
     name = state["name"]
     contact = state["contact"]
@@ -82,13 +95,13 @@ def evaluate_qualification(state: LeadState) -> LeadState:
     else:
         # Lead is qualified
         state["qualified"] = True
-        print(MESSAGES["qualified_success"])
-        print(MESSAGES["qualified_summary"])
-        print(f"   • Tipo de evento: Corporativo")
-        print(f"   • Presupuesto: ${budget:,.2f} USD")
-        print(f"   • Nombre: {name}")
-        print(f"   • Contacto ({contact_type}): {contact}")
-        print(MESSAGES["contact_followup"])
+        print(MESSAGES["qualified_success"].format(
+            event_type=event_type,
+            budget=budget,
+            name=name,
+            contact_type=contact_type,
+            contact=contact
+        ))
     
     return state
 

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from config import ERROR_MESSAGES
 
 load_dotenv()
 
@@ -48,52 +49,49 @@ class EventClassifier:
             self.prompt_template = ChatPromptTemplate.from_template(template_content)
             
         except Exception as e:
-            print(f"Error inicializando LLM: {e}")
             self.llm = None
     
     def is_available(self) -> bool:
         return self.llm is not None and os.getenv("OPENAI_API_KEY") is not None
 
     
-    def classify_event(self, event_description: str) -> Optional[bool]:
+    def classify_event(self, event_description: str) -> tuple[Optional[bool], Optional[str]]:
         """
-        Classify an event as corporate or not using LLM.
+        Classify an event and return both corporate status and event type using LLM.
         
         Args:
             event_description: Description of the event
             
         Returns:
-            True if corporate, False if not corporate, None if error
+            Tuple of (is_corporate, event_type) where:
+            - is_corporate: True if corporate, False if not corporate, None if error
+            - event_type: Specific event type or "Corporativo" if corporate, None if error
         """
         if not self.is_available():
-            return None
+            return None, None
         
         try:
             chain = self.prompt_template | self.llm | self.output_parser
             response = chain.invoke({"event_description": event_description})
             response_clean = response.strip().upper()
             
-            if "CORPORATIVO" in response_clean and "NO CORPORATIVO" not in response_clean:
-                return True
-            elif "NO CORPORATIVO" in response_clean:
-                return False
+            if response_clean == "CORPORATIVO":
+                return True, "Corporativo"
             else:
-                # Fallback: try to extract meaning
-                if any(word in response_clean for word in ["CORPORATIVO", "EMPRESARIAL", "NEGOCIO"]):
-                    return True
-                else:
-                    return False
+                # If not CORPORATIVO, the response should be the specific event type
+                event_type = response.strip().title()
+                return False, event_type
                     
         except Exception as e:
-            print(f"Error en clasificación LLM: {e}")
-            return None
+            print(ERROR_MESSAGES["llm_classification_error"].format(error=e))
+            return None, None
 
 
 # Global instance
 event_classifier = EventClassifier()
 
 
-def classify_event_with_llm(event_description: str) -> Optional[bool]:
+def classify_event_with_llm(event_description: str) -> tuple[Optional[bool], Optional[str]]:
     return event_classifier.classify_event(event_description)
 
 
