@@ -7,14 +7,6 @@ This module centralizes all configuration values and constants
 # Qualification criteria
 MIN_BUDGET = 1000.0
 
-CORPORATE_KEYWORDS = {
-    "corporativo", 
-    "corporate", 
-    "empresarial", 
-    "business",
-    "empresa"
-}
-
 MIN_EMAIL_LENGTH = 5
 MIN_PHONE_DIGITS = 7
 

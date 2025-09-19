@@ -1,7 +1,7 @@
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 import re
 
-from config import CORPORATE_KEYWORDS, MIN_EMAIL_LENGTH, MIN_PHONE_DIGITS, ERROR_MESSAGES
+from config import MIN_EMAIL_LENGTH, MIN_PHONE_DIGITS, ERROR_MESSAGES
 
 
 def collect_string(prompt: str, validator: Optional[Callable[[str], bool]] = None) -> str:
@@ -72,29 +72,6 @@ def collect_yes_no_describe() -> tuple[str, str]:
                 print("Por favor, proporciona una descripción del evento.")
         else:
             print("Por favor, selecciona una opción válida (1/2/3 o sí/no/describir).")
-
-
-def collect_contact_type() -> str:
-    """
-    Collect contact type preference (email or phone) with numeric options.
-    
-    Returns:
-        "email" or "phone" based on user selection
-    """
-    print("¿Prefieres email o teléfono?")
-    print("1. Email")
-    print("2. Teléfono")
-    
-    while True:
-        choice = input("Selecciona una opción (1/2 o email/teléfono): ").strip().lower()
-        
-        # Handle numeric choices
-        if choice in ["1", "email", "e-mail", "correo"]:
-            return "email"
-        elif choice in ["2", "teléfono", "telefono", "phone", "tel"]:
-            return "phone"
-        else:
-            print("Por favor, selecciona una opción válida (1/2 o email/teléfono).")
 
 
 def collect_choice(prompt: str, choices: list[str], case_sensitive: bool = False) -> str:
@@ -199,34 +176,6 @@ def normalize_phone(phone: str) -> str:
         Normalized phone string with only digits
     """
     return re.sub(r'\D', '', phone)
-
-
-def is_valid_email_format(email: str) -> bool:
-    """
-    Check if email has valid format using regex.
-    
-    Args:
-        email: Email string to check
-        
-    Returns:
-        True if format is valid, False otherwise
-    """
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return bool(re.match(pattern, email))
-
-
-def is_valid_phone_format(phone: str) -> bool:
-    """
-    Check if phone has valid format.
-    
-    Args:
-        phone: Phone string to check
-        
-    Returns:
-        True if format is valid, False otherwise
-    """
-    clean_phone = re.sub(r'\D', '', phone)
-    return 7 <= len(clean_phone) <= 15 and clean_phone.isdigit()
 
 
 def detect_contact_type(contact_input: str) -> tuple[str, str]:
