@@ -7,9 +7,7 @@ from utils.validators import (
     collect_float, 
     collect_choice,
     collect_yes_no_describe,
-    collect_contact_type,
-    validate_email,
-    validate_phone
+    collect_contact_with_detection
 )
 
 
@@ -53,12 +51,9 @@ def collect_contact_info(state: LeadState) -> LeadState:
     print(MESSAGES["contact_question"])
     state["name"] = collect_string("Nombre")
     
-    contact_type = collect_contact_type()
-    
-    if contact_type == "email":
-        state["contact"] = collect_string("Email", validator=validate_email)
-    else:
-        state["contact"] = collect_string("Teléfono", validator=validate_phone)
+    contact_value, contact_type = collect_contact_with_detection()
+    state["contact"] = contact_value
+    state["contact_type"] = contact_type
     
     return state
 
@@ -70,6 +65,7 @@ def evaluate_qualification(state: LeadState) -> LeadState:
     budget = state["budget"]
     name = state["name"]
     contact = state["contact"]
+    contact_type = state["contact_type"]
     
     if not is_corporate:
         print(ERROR_MESSAGES["not_corporate"])
@@ -91,7 +87,7 @@ def evaluate_qualification(state: LeadState) -> LeadState:
         print(f"   • Tipo de evento: Corporativo")
         print(f"   • Presupuesto: ${budget:,.2f} USD")
         print(f"   • Nombre: {name}")
-        print(f"   • Contacto: {contact}")
+        print(f"   • Contacto ({contact_type}): {contact}")
         print(MESSAGES["contact_followup"])
     
     return state

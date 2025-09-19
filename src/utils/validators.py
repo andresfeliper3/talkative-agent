@@ -227,3 +227,50 @@ def is_valid_phone_format(phone: str) -> bool:
     """
     clean_phone = re.sub(r'\D', '', phone)
     return 7 <= len(clean_phone) <= 15 and clean_phone.isdigit()
+
+
+def detect_contact_type(contact_input: str) -> tuple[str, str]:
+    """
+    Automatically detect if the input is an email, phone, or invalid.
+    
+    Args:
+        contact_input: The contact information entered by the user
+        
+    Returns:
+        Tuple of (contact_type, normalized_contact) where:
+        - contact_type: "email", "phone", or "invalid"
+        - normalized_contact: cleaned/normalized version of the input
+    """
+    if not contact_input or not contact_input.strip():
+        return "invalid", ""
+    
+    contact_input = contact_input.strip()
+    
+    if validate_email(contact_input):
+        return "email", normalize_email(contact_input)
+    
+    if validate_phone(contact_input):
+        return "phone", normalize_phone(contact_input)
+    
+    return "invalid", contact_input
+
+
+def collect_contact_with_detection() -> tuple[str, str]:
+    """
+    Collect contact information and automatically detect if it's email or phone.
+    
+    Returns:
+        Tuple of (contact_value, contact_type) where:
+        - contact_value: The normalized contact information
+        - contact_type: "email" or "phone"
+    """
+    while True:
+        contact_input = input("Email o teléfono de contacto: ").strip()
+        
+        contact_type, normalized_contact = detect_contact_type(contact_input)
+        
+        if contact_type == "invalid":
+            print("Por favor, ingresa un email válido (ej: usuario@ejemplo.com) o un teléfono válido (ej: +1234567890).")
+            continue
+        
+        return normalized_contact, contact_type

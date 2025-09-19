@@ -7,5 +7,6 @@ class LeadState(TypedDict):
     budget: Optional[float]
     name: Optional[str]
     contact: Optional[str]
+    contact_type: Optional[str]  
     qualified: Optional[bool]
 

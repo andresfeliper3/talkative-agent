@@ -12,6 +12,7 @@ def run_cli():
         "budget": None,
         "name": None,
         "contact": None,
+        "contact_type": None,
         "qualified": None
     }
     
