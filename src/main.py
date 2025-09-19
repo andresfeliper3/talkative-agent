@@ -1,6 +1,5 @@
 from models.state import LeadState
 from flow.graph import build_graph
-from config import MESSAGES
 
 
 def run_cli():
@@ -18,8 +17,6 @@ def run_cli():
     }
     
     final_state = graph.invoke(initial_state)
-    print(MESSAGES["conversation_end"])
-    print(MESSAGES["final_state"].format(final_state=final_state))
 
 
 if __name__ == "__main__":

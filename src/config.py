@@ -10,12 +10,28 @@ MIN_BUDGET = 1000.0
 MIN_EMAIL_LENGTH = 5
 MIN_PHONE_DIGITS = 7
 
+# Google Sheets configuration
+SHEETS_CONFIG = {
+    "spreadsheet_name": "Lead Qualification System",
+    "worksheet_name": "Leads",
+    "headers": [
+        "Es Corporativo",
+        "Tipo de Evento", 
+        "Presupuesto",
+        "Nombre",
+        "Contacto",
+        "Tipo de Contacto",
+        "Calificado",
+        "Fecha de Registro"
+    ]
+}
+
 MESSAGES = {
     "welcome": "¡Hola! 👋\n\nBienvenido a nuestro sistema de calificación de eventos corporativos. Estamos aquí para ayudarte a organizar el evento perfecto para tu empresa.\n\n¿Qué tipo de evento corporativo te gustaría organizar?",
     "budget_question": "¿Cuál es tu presupuesto estimado en USD?",
     "contact_question": "Perfecto. ¿Me compartes tu nombre y un email o teléfono de contacto?",
     "evaluation_header": "\n--- Evaluando tu solicitud ---",
-    "qualified_success": "¡Perfecto!\n\nResumen de tu solicitud:\n   • Tipo de clsrcial.",
+    "qualified_success": "¡Perfecto!\n",
     "conversation_end": "\n--- Conversación terminada ---",
     "event_type_question": "¿Tu evento es corporativo?",
     "event_type_options": [

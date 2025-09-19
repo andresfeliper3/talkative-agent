@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph
 from models.state import LeadState
 from config import MIN_BUDGET, MESSAGES, ERROR_MESSAGES
 from services.llm_classifier import classify_event_with_llm, is_llm_available
+from services.google_sheets import save_lead_to_sheets, is_sheets_available
 from utils.validators import (
     collect_string, 
     collect_float, 
@@ -93,15 +94,15 @@ def evaluate_qualification(state: LeadState) -> LeadState:
         print(ERROR_MESSAGES["missing_contact"])
         state["qualified"] = False
     else:
-        # Lead is qualified
+        print(MESSAGES["qualified_success"])
         state["qualified"] = True
-        print(MESSAGES["qualified_success"].format(
-            event_type=event_type,
-            budget=budget,
-            name=name,
-            contact_type=contact_type,
-            contact=contact
-        ))
+    
+    return state
+
+
+def save_lead_data(state: LeadState) -> LeadState:
+    if is_sheets_available():
+        save_lead_to_sheets(state)
     
     return state
 
@@ -113,11 +114,13 @@ def build_graph() -> StateGraph:
     workflow.add_node("collect_budget", collect_budget)
     workflow.add_node("collect_contact_info", collect_contact_info)
     workflow.add_node("evaluate_qualification", evaluate_qualification)
+    workflow.add_node("save_lead_data", save_lead_data)
     
     workflow.set_entry_point("collect_event_type")
     
     workflow.add_edge("collect_event_type", "collect_budget")
     workflow.add_edge("collect_budget", "collect_contact_info")
     workflow.add_edge("collect_contact_info", "evaluate_qualification")
+    workflow.add_edge("evaluate_qualification", "save_lead_data")
     
     return workflow.compile()
