@@ -26,7 +26,20 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Paso 4: Configurar Google Sheets API
+### Paso 4: Configurar variables de entorno
+```bash
+# Copia el archivo de ejemplo
+cp env.example .env
+
+# Edita el archivo .env con tu API key de OpenAI
+# OPENAI_API_KEY=sk-tu-api-key-aqui
+```
+
+
+
+**Nota:** El token de OpenAI es opcional. Si no lo configuras, el sistema usará clasificación manual en lugar de IA.
+
+### Paso 5: Configurar Google Sheets API
 1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
 2. Crea un nuevo proyecto o selecciona uno existente
 3. Habilita la **Google Sheets API**
@@ -38,7 +51,7 @@ pip install -r requirements.txt
 9. Renómbralo a `credentials.json`
 10. Colócalo en `src/credentials/credentials.json`
 
-### Paso 5: Primera ejecución
+### Paso 6: Primera ejecución
 ```bash
 cd src
 python main.py
@@ -48,7 +61,7 @@ python main.py
 - Autoriza el acceso a Google Sheets
 - Se creará automáticamente `token.json`
 
-### Paso 6: ¡Listo para usar!
+### Paso 7: ¡Listo para usar!
 ```bash
 python main.py
 ```
@@ -146,24 +159,31 @@ El sistema crea automáticamente una hoja de cálculo con diseño elegante:
 ## Estructura del proyecto
 
 ```
-src/
-├── main.py                 # Punto de entrada
-├── config.py              # Configuración y mensajes
-├── flow/
-│   └── graph.py           # Flujo conversacional
-├── models/
-│   └── state.py           # Modelo de datos
-├── services/
-│   ├── google_sheets.py   # Integración con Google Sheets
-│   └── llm_classifier.py  # Clasificación con IA
-├── utils/
-│   └── validators.py      # Validadores de entrada
-├── credentials/           # Credenciales OAuth2
-│   ├── credentials.json   # Configuración OAuth2
-│   ├── token.json        # Token de acceso
-│   └── README.md         # Guía de configuración
-└── prompts/
-    └── event_classification.md  # Prompt para IA
+talkative-agent/
+├── src/
+│   ├── main.py                 # Punto de entrada
+│   ├── config.py              # Configuración y mensajes
+│   ├── flow/
+│   │   └── graph.py           # Flujo conversacional
+│   ├── models/
+│   │   └── state.py           # Modelo de datos
+│   ├── services/
+│   │   ├── google_sheets.py   # Integración con Google Sheets
+│   │   └── llm_classifier.py  # Clasificación con IA
+│   ├── utils/
+│   │   └── validators.py      # Validadores de entrada
+│   ├── credentials/           # Credenciales OAuth2
+│   │   ├── credentials.json   # Configuración OAuth2
+│   │   ├── token.json        # Token de acceso
+│   │   └── README.md         # Guía de configuración
+│   └── prompts/
+│       └── event_classification.md  # Prompt para IA
+├── docs/
+│   └── sheets-screenshot.png  # Captura de pantalla
+├── env.example               # Variables de entorno de ejemplo
+├── .env                     # Variables de entorno (crear manualmente)
+├── requirements.txt         # Dependencias de Python
+└── README.md               # Este archivo
 ```
 
 ## Requisitos
@@ -172,6 +192,7 @@ src/
 - Google Cloud Console (para credenciales OAuth2)
 - Cuenta de Google con acceso a Google Sheets
 - **Hoja de Google Sheets**: ID `181M0QYYtFhEXB39Qal_htrYe5vI8hCFOdna3mglyGZQ` (configurable)
+- **OpenAI API Key** (opcional): Para clasificación automática con IA
 
 ## Configuración de Google Sheets
 
@@ -198,6 +219,37 @@ Si quieres usar tu propia hoja de Google Sheets:
 
 ## Documentación adicional
 - [Guía de credenciales](src/credentials/README.md)
+- [Configuración de OpenAI](#configuración-de-openai)
+
+## Configuración de OpenAI
+
+### Obtener API Key
+1. Ve a [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Inicia sesión con tu cuenta de OpenAI
+3. Haz clic en **"Create new secret key"**
+4. Copia la API key generada
+
+### Configurar en el proyecto
+1. Copia `env.example` a `.env`:
+   ```bash
+   cp env.example .env
+   ```
+
+2. Edita el archivo `.env`:
+   ```bash
+   OPENAI_API_KEY=sk-tu-api-key-real-aqui
+   ```
+
+3. Guarda el archivo
+
+### Funcionalidad con OpenAI
+- **Con API key**: El sistema usa IA para clasificar automáticamente si un evento es corporativo
+- **Sin API key**: El sistema usa clasificación manual (el usuario debe responder sí/no)
+
+### Costos
+- La API de OpenAI tiene costos por uso
+- Para desarrollo/testing, los costos son mínimos
+- Consulta los precios en: [https://openai.com/pricing](https://openai.com/pricing)
 
 
 
