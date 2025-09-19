@@ -2,41 +2,67 @@
 
 Un agente conversacional inteligente que califica leads para eventos corporativos y los guarda automáticamente en Google Sheets.
 
+## 🚀 Instalación y configuración
+
+### Paso 1: Clonar el repositorio
+```bash
+git clone https://github.com/andresfeliper3/talkative-agent.git
+cd talkative-agent
+```
+
+### Paso 2: Crear entorno virtual
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Paso 3: Instalar dependencias
+```bash
+pip install -r requirements.txt
+```
+
+### Paso 4: Configurar Google Sheets API
+1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
+2. Crea un nuevo proyecto o selecciona uno existente
+3. Habilita la **Google Sheets API**
+4. Ve a **"APIs & Services"** > **"Credentials"**
+5. Haz clic en **"Create Credentials"** > **"OAuth client ID"**
+6. Selecciona **"Desktop application"**
+7. Completa el nombre de la aplicación
+8. Descarga el archivo JSON
+9. Renómbralo a `credentials.json`
+10. Colócalo en `src/credentials/credentials.json`
+
+### Paso 5: Primera ejecución
+```bash
+cd src
+python main.py
+```
+- Se abrirá automáticamente el navegador
+- Inicia sesión con tu cuenta de Google
+- Autoriza el acceso a Google Sheets
+- Se creará automáticamente `token.json`
+
+### Paso 6: ¡Listo para usar!
+```bash
+python main.py
+```
+
 ##  Cómo ejecutar el agente
 
-### Opción 1: Con credenciales configuradas
+Una vez completada la instalación y configuración:
+
 ```bash
 cd src
 python main.py
 ```
 
-### Opción 2: Configuración desde cero
-Si no tienes los archivos de credenciales, sigue estos pasos:
-
-1. **Instalar dependencias:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Configurar Google Sheets API:**
-   - Ve a [Google Cloud Console](https://console.cloud.google.com/)
-   - Crea un proyecto y habilita Google Sheets API
-   - Crea credenciales OAuth2 (Desktop application)
-   - Descarga el archivo JSON como `src/credentials/credentials.json`
-
-3. **Primera ejecución:**
-   ```bash
-   cd src
-   python main.py
-   ```
-   - Se abrirá el navegador para autenticación
-   - Autoriza el acceso a Google Sheets
-   - Se creará automáticamente `token.json`
-
-4. **Ejecutar el agente:**
-   ```bash
-   python main.py
-   ```
+El agente iniciará la conversación automáticamente y te guiará a través del proceso de calificación de leads.
 
 ##  Ejemplos de uso
 
