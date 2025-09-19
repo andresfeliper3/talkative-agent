@@ -7,6 +7,7 @@ from utils.validators import (
     collect_float, 
     collect_choice,
     collect_yes_no_describe,
+    collect_contact_type,
     validate_email,
     validate_phone
 )
@@ -52,13 +53,9 @@ def collect_contact_info(state: LeadState) -> LeadState:
     print(MESSAGES["contact_question"])
     state["name"] = collect_string("Nombre")
     
-    contact_type = collect_choice(
-        "¿Prefieres email o teléfono? (email/teléfono)",
-        choices=["email", "correo","teléfono", "telefono"],
-        case_sensitive=False
-    )
+    contact_type = collect_contact_type()
     
-    if contact_type.lower() in ["email", "e-mail", "correo"]:
+    if contact_type == "email":
         state["contact"] = collect_string("Email", validator=validate_email)
     else:
         state["contact"] = collect_string("Teléfono", validator=validate_phone)

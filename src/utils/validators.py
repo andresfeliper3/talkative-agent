@@ -74,6 +74,29 @@ def collect_yes_no_describe() -> tuple[str, str]:
             print("Por favor, selecciona una opción válida (1/2/3 o sí/no/describir).")
 
 
+def collect_contact_type() -> str:
+    """
+    Collect contact type preference (email or phone) with numeric options.
+    
+    Returns:
+        "email" or "phone" based on user selection
+    """
+    print("¿Prefieres email o teléfono?")
+    print("1. Email")
+    print("2. Teléfono")
+    
+    while True:
+        choice = input("Selecciona una opción (1/2 o email/teléfono): ").strip().lower()
+        
+        # Handle numeric choices
+        if choice in ["1", "email", "e-mail", "correo"]:
+            return "email"
+        elif choice in ["2", "teléfono", "telefono", "phone", "tel"]:
+            return "phone"
+        else:
+            print("Por favor, selecciona una opción válida (1/2 o email/teléfono).")
+
+
 def collect_choice(prompt: str, choices: list[str], case_sensitive: bool = False) -> str:
     """
     Collect a choice from a list of valid options.

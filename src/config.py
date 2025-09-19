@@ -30,10 +30,10 @@ MESSAGES = {
 }
 
 ERROR_MESSAGES = {
-    "not_corporate": "Lo sentimos, solo trabajamos con eventos corporativos.",
+    "not_corporate": "Lo sentimos, nuestro trabajo se enfoca principalmente en eventos corporativos.",
     "insufficient_budget": "Lo sentimos, no podemos trabajar con presupuestos menores a ${min_budget:,.0f} USD.",
-    "missing_name": "Necesitamos tu nombre para procesar la solicitud.",
-    "missing_contact": "Necesitamos un email o teléfono de contacto.",
+    "missing_name": "Ingresa tu nombre.",
+    "missing_contact": "Ingresa tu email o teléfono de contacto.",
     "invalid_input": "Por favor, ingresa un valor válido.",
     "invalid_number": "Por favor, ingresa un número válido.",
     "invalid_choice": "Por favor, elige una de estas opciones: {choices}",
